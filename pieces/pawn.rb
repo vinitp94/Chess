@@ -14,7 +14,7 @@ class Pawn < Piece
     end
   end
 
-  def get_moves(move_dirs)
+  def get_moves
     valid_moves = []
 
     move_dirs.each_with_index do |move, i|

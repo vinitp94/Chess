@@ -1,5 +1,5 @@
 module SteppingPiece
-  def get_moves(move_dirs)
+  def get_moves
     valid_moves = []
 
     move_dirs.each do |move|
@@ -12,7 +12,7 @@ module SteppingPiece
 end
 
 module SlidingPiece
-  def get_moves(move_dirs)
+  def get_moves
     valid_moves = []
 
     move_dirs.each do |move|
