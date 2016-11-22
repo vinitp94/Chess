@@ -12,14 +12,14 @@ class Board
 
   def initialize
     @grid = Array.new(8) { Array.new(8) }
-    @black_king = King.new("black", [0, 3], self)
+    @black_king = King.new("black", [0, 4], self)
     @white_king = King.new("white", [7, 4], self)
     populate
   end
 
   def populate
-    self[[0, 4]] = Queen.new("black", [0, 4], self)
-    self[[0, 3]] = black_king
+    self[[0, 3]] = Queen.new("black", [0, 3], self)
+    self[[0, 4]] = black_king
     self[[0, 2]], self[[0, 5]] = Bishop.new("black", [0, 2], self), Bishop.new("black", [0, 5], self)
     self[[0, 1]], self[[0, 6]] = Knight.new("black", [0, 1], self), Knight.new("black", [0, 6], self)
     self[[0, 0]], self[[0, 7]] = Rook.new("black", [0, 0], self), Rook.new("black", [0, 7], self)
@@ -91,6 +91,18 @@ class Board
   end
 
   def checkmate?(color)
+    if in_check?(color)
+      if color == "white"
+        possible_moves = white_king.get_moves
+        return true if possible_moves.empty?
+        return possible_moves.all? { |el| combined_moves("black").include?(el) }
+      elsif color == "black"
+        possible_moves = black_king.get_moves
+        return true if possible_moves.empty?
+        return possible_moves.all? { |el| combined_moves("white").include?(el) }
+      end
+    end
+    false
   end
 end
 
@@ -101,21 +113,40 @@ if $PROGRAM_NAME == __FILE__
   d.render
   sleep(2)
   system('clear')
-  b.move_piece([1, 3], [2, 3])
+  b.move_piece([6, 5], [5, 5])
   d.render
-  p b[[2, 3]].get_moves
-  b.move_piece([0, 4], [2, 2])
-  system('clear')
-  d.render
-  b.move_piece([2, 2], [6, 2])
-  system('clear')
-  d.render
-
-  p b.in_check?("white")
-  b.move_piece([6, 2], [7, 3])
   sleep(2)
   system('clear')
+  b.move_piece([1, 4], [2, 4])
+  b.move_piece([2, 4], [3, 4])
   d.render
-  p b.in_check?("white")
+  sleep(2)
+  system('clear')
+  b.move_piece([6, 6], [5, 6])
+  #b.move_piece([5, 6], [4, 6])
+  d.render
+  sleep(2)
+  system('clear')
+  b.move_piece([0, 3], [4, 7])
+  d.render
+  p b.checkmate?("white")
+  # sleep(2)
+  # system('clear')
+  # b.move_piece([1, 3], [2, 3])
+  # d.render
+  # p b[[2, 3]].get_moves
+  # b.move_piece([0, 4], [2, 2])
+  # system('clear')
+  # d.render
+  # b.move_piece([2, 2], [6, 2])
+  # system('clear')
+  # d.render
+  #
+  # p b.in_check?("white")
+  # b.move_piece([6, 2], [7, 3])
+  # sleep(2)
+  # system('clear')
+  # d.render
+  # p b.in_check?("white")
 
 end
