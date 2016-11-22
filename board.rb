@@ -1,4 +1,7 @@
-require_relative "piece"
+require_relative "pieces/piece"
+require_relative "pieces/sliding_pieces"
+require_relative "pieces/stepping_pieces"
+require_relative "pieces/pawn"
 require_relative "display"
 
 class Board
