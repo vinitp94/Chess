@@ -12,7 +12,7 @@ module SteppingPiece
 end
 
 module SlidingPiece
-  def move(move_dirs)
+  def get_moves(move_dirs)
     valid_moves = []
 
     move_dirs.each do |move|
@@ -23,6 +23,7 @@ module SlidingPiece
 
         if valid_move?([x, y])
           valid_moves << [x, y]
+          break if !board[[x, y]].is_a?(NullPiece) && board[[x, y]].color != color
         else
           break
         end

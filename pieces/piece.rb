@@ -1,3 +1,5 @@
+require 'singleton'
+
 class Piece
   attr_reader :color, :board, :symbol
   attr_accessor :pos
@@ -25,8 +27,10 @@ class Piece
 end
 
 class NullPiece < Piece
-  def initialize(color, pos, board)
-    super(color, pos, board)
+  include Singleton
+
+  def initialize
     @symbol = :_
   end
+
 end

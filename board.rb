@@ -1,6 +1,9 @@
 require_relative "pieces/piece"
-require_relative "pieces/sliding_pieces"
-require_relative "pieces/stepping_pieces"
+require_relative "pieces/bishop"
+require_relative "pieces/rook"
+require_relative "pieces/queen"
+require_relative "pieces/king"
+require_relative "pieces/knight"
 require_relative "pieces/pawn"
 require_relative "display"
 
@@ -28,7 +31,7 @@ class Board
 
     (2..5).to_a.each do |i|
       (0..7).to_a.each do |j|
-        self[[i, j]] = NullPiece.new(nil, [i, j], self)
+        self[[i, j]] = NullPiece.instance
       end
     end
   end
@@ -54,11 +57,27 @@ class Board
     end
 
     if piece.get_moves(piece.move_dirs).include?(end_pos)
-      self[start_pos] = NullPiece.new(nil, start_pos, self)
+      self[start_pos] = NullPiece.instance
       piece.pos = end_pos
       self[end_pos] = piece
     else
       raise StandardError.new "Invalid End Position"
     end
   end
+end
+
+if $PROGRAM_NAME == __FILE__
+  b = Board.new
+  b.populate
+  d = Display.new(b)
+  d.render
+  sleep(2)
+  system('clear')
+  b.move_piece([1, 3], [2, 3])
+  d.render
+  b.move_piece([0, 4], [2, 2])
+  system('clear')
+  d.render
+  p b[[2,2]].get_moves(b[[2,2]].move_dirs)
+
 end
