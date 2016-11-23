@@ -8,9 +8,9 @@ class Pawn < Piece
 
   def move_dirs
     if color == "black"
-      [[1, 0], [1, 1], [1, -1]]
+      [[1, 0], [1, 1], [1, -1], [2, 0]]
     else
-      [[-1, 0], [-1, 1], [-1, -1]]
+      [[-1, 0], [-1, 1], [-1, -1], [-2, 0]]
     end
   end
 
@@ -26,6 +26,12 @@ class Pawn < Piece
 
       if i == 0
         valid_moves << [x, y] if is_valid && is_empty
+      elsif i == 3
+        if pos[0] == 1 && color == "black"
+          valid_moves << [x, y] if is_valid && is_empty
+        elsif pos[0] == 6 && color == "white"
+          valid_moves << [x, y] if is_valid && is_empty
+        end
       else
         valid_moves << [x, y] if is_valid && !is_empty
       end

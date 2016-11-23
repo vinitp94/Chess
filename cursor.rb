@@ -90,5 +90,7 @@ class Cursor
     x = @cursor_pos[0] + diff[0]
     y = @cursor_pos[1] + diff[1]
     @cursor_pos = [x, y] if @board.in_bounds?([x, y])
+    nil
   end
+
 end

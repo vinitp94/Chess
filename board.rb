@@ -8,13 +8,14 @@ require_relative "pieces/pawn"
 require_relative "display"
 
 class Board
-  attr_reader :grid, :black_king, :white_king
+  attr_reader :grid, :display, :black_king, :white_king
 
   def initialize
     @grid = Array.new(8) { Array.new(8) }
     @black_king = King.new("black", [0, 4], self)
     @white_king = King.new("white", [7, 4], self)
     populate
+    @display = Display.new(self)
   end
 
   def populate
@@ -39,6 +40,10 @@ class Board
     end
   end
 
+  def render
+    display.render
+  end
+
   def [](pos)
     row, col = pos
     @grid[row][col]
@@ -53,19 +58,41 @@ class Board
     pos.all? { |el| el.between?(0, 7) }
   end
 
-  def move_piece(start_pos, end_pos)
+  def valid_start?(start_pos, color)
     piece = self[start_pos]
     if piece.is_a?(NullPiece)
-      raise StandardError.new "No piece at that position."
+      raise StandardError.new "Invalid Start Position."
+    elsif piece.color != color
+      raise StandardError.new "Not your piece!"
+    elsif piece.get_moves.empty?
+      raise StandardError.new "Nowhere for this piece to move."
     end
+    true
+  end
 
-    if piece.get_moves.include?(end_pos)
-      self[start_pos] = NullPiece.instance
-      piece.pos = end_pos
-      self[end_pos] = piece
-    else
+  def valid_end?(start_pos, end_pos)
+    piece = self[start_pos]
+    unless piece.get_moves.include?(end_pos)
       raise StandardError.new "Invalid End Position"
     end
+    true
+  end
+
+  def move_piece(start_pos, end_pos)
+    piece = self[start_pos]
+    end_piece = self[end_pos]
+    end_piece.pos = nil
+    # if piece.is_a?(NullPiece)
+    #   raise StandardError.new "Invalid Start Position."
+    # end
+
+    # if piece.get_moves.include?(end_pos)
+    self[start_pos] = NullPiece.instance
+    piece.pos = end_pos
+    self[end_pos] = piece
+    # else
+    #   raise StandardError.new "Invalid End Position"
+    # end
   end
 
   def in_check?(color)
@@ -107,46 +134,31 @@ class Board
 end
 
 if $PROGRAM_NAME == __FILE__
-  b = Board.new
-  b.populate
-  d = Display.new(b)
-  d.render
-  sleep(2)
-  system('clear')
-  b.move_piece([6, 5], [5, 5])
-  d.render
-  sleep(2)
-  system('clear')
-  b.move_piece([1, 4], [2, 4])
-  b.move_piece([2, 4], [3, 4])
-  d.render
-  sleep(2)
-  system('clear')
-  b.move_piece([6, 6], [5, 6])
-  #b.move_piece([5, 6], [4, 6])
-  d.render
-  sleep(2)
-  system('clear')
-  b.move_piece([0, 3], [4, 7])
-  d.render
-  p b.checkmate?("white")
+  # b = Board.new
+  # b.populate
+  # d = Display.new(b)
+  # d.render
   # sleep(2)
   # system('clear')
-  # b.move_piece([1, 3], [2, 3])
+  # b.move_piece([6, 5], [5, 5])
   # d.render
-  # p b[[2, 3]].get_moves
-  # b.move_piece([0, 4], [2, 2])
+  # sleep(2)
   # system('clear')
-  # d.render
-  # b.move_piece([2, 2], [6, 2])
-  # system('clear')
-  # d.render
+  # b.move_piece([1, 4], [3, 4])
   #
-  # p b.in_check?("white")
-  # b.move_piece([6, 2], [7, 3])
+  # d.render
   # sleep(2)
   # system('clear')
+  # b.move_piece([6, 6], [4, 6])
+  # p b[[4, 6]].get_moves
+  # #b.move_piece([5, 6], [4, 6])
   # d.render
-  # p b.in_check?("white")
+  # sleep(2)
+  # system('clear')
+  # b.move_piece([0, 3], [4, 7])
+  # d.render
+  # p b.checkmate?("white")
+
+
 
 end
