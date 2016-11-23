@@ -20,15 +20,17 @@ class Game
       @current_player.play_turn
       switch_players
     end
-    #handle_winner
+    handle_winner
   end
 
   def game_over?
-
+    board.checkmate?("white") || board.checkmate?("black") ||
+      board.white_king.pos.nil? || board.black_king.pos.nil?
   end
 
   def handle_winner
-
+    switch_players
+    puts "Game over. #{current_player.name} wins!"
   end
 
   def switch_players

@@ -82,17 +82,9 @@ class Board
     piece = self[start_pos]
     end_piece = self[end_pos]
     end_piece.pos = nil
-    # if piece.is_a?(NullPiece)
-    #   raise StandardError.new "Invalid Start Position."
-    # end
-
-    # if piece.get_moves.include?(end_pos)
     self[start_pos] = NullPiece.instance
     piece.pos = end_pos
     self[end_pos] = piece
-    # else
-    #   raise StandardError.new "Invalid End Position"
-    # end
   end
 
   def in_check?(color)
@@ -134,31 +126,5 @@ class Board
 end
 
 if $PROGRAM_NAME == __FILE__
-  # b = Board.new
-  # b.populate
-  # d = Display.new(b)
-  # d.render
-  # sleep(2)
-  # system('clear')
-  # b.move_piece([6, 5], [5, 5])
-  # d.render
-  # sleep(2)
-  # system('clear')
-  # b.move_piece([1, 4], [3, 4])
-  #
-  # d.render
-  # sleep(2)
-  # system('clear')
-  # b.move_piece([6, 6], [4, 6])
-  # p b[[4, 6]].get_moves
-  # #b.move_piece([5, 6], [4, 6])
-  # d.render
-  # sleep(2)
-  # system('clear')
-  # b.move_piece([0, 3], [4, 7])
-  # d.render
-  # p b.checkmate?("white")
-
-
 
 end
