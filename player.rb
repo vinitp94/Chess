@@ -19,9 +19,8 @@ class HumanPlayer
   end
 
   def play_turn
-    #debugger
     begin
-      cursor_start = cursor_input("#{name}, choose a piece you would like to move.")
+      cursor_start = cursor_input("#{name}, choose a piece you would like to move.\n\n")
       board.valid_start?(cursor_start, color)
     rescue StandardError => e
       puts e.message
@@ -30,7 +29,8 @@ class HumanPlayer
     end
 
     begin
-      cursor_end = cursor_input("#{name}, choose a position to move to.")
+      cursor_end = cursor_input("#{name}, you selected: #{cursor_start}\n" +
+      "Choose a position to move to.")
       board.valid_end?(cursor_start, cursor_end)
     rescue StandardError => e2
       puts e2.message
@@ -39,6 +39,5 @@ class HumanPlayer
     end
 
     board.move_piece(cursor_start, cursor_end)
-    board.render
   end
 end

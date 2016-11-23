@@ -1,12 +1,13 @@
 require_relative 'piece'
 require_relative 'modules'
+require 'colorize'
 
 class King < Piece
   include SteppingPiece
 
   def initialize(color, pos, board)
     super(color, pos, board)
-    @symbol = :K
+    @symbol = "♔".colorize(color)
   end
 
   def move_dirs

@@ -1,12 +1,13 @@
 require_relative 'piece'
 require_relative 'modules'
+require 'colorize'
 
 class Rook < Piece
   include SlidingPiece
 
   def initialize(color, pos, board)
     super(color, pos, board)
-    @symbol = :R
+    @symbol = "♖".colorize(color)
   end
 
   def move_dirs
