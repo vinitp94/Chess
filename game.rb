@@ -25,6 +25,8 @@ class Game
     handle_winner
   end
 
+  private
+  
   def game_over?
     board.checkmate?(player1.color) || board.checkmate?(player2.color) ||
       board.white_king.pos.nil? || board.black_king.pos.nil?

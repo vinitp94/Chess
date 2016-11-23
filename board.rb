@@ -18,28 +18,6 @@ class Board
     @display = Display.new(self)
   end
 
-  def populate
-    self[[0, 3]] = Queen.new(:red, [0, 3], self)
-    self[[0, 4]] = black_king
-    self[[0, 2]], self[[0, 5]] = Bishop.new(:red, [0, 2], self), Bishop.new(:red, [0, 5], self)
-    self[[0, 1]], self[[0, 6]] = Knight.new(:red, [0, 1], self), Knight.new(:red, [0, 6], self)
-    self[[0, 0]], self[[0, 7]] = Rook.new(:red, [0, 0], self), Rook.new(:red, [0, 7], self)
-    (0..7).to_a.each { |el| self[[1, el]] = Pawn.new(:red, [1, el], self) }
-
-    self[[7, 3]] = Queen.new(:white, [7, 3], self)
-    self[[7, 4]] = white_king
-    self[[7, 2]], self[[7, 5]] = Bishop.new(:white, [7, 2], self), Bishop.new(:white, [7, 5], self)
-    self[[7, 1]], self[[7, 6]] = Knight.new(:white, [7, 1], self), Knight.new(:white, [7, 6], self)
-    self[[7, 0]], self[[7, 7]] = Rook.new(:white, [7, 0], self), Rook.new(:white, [7, 7], self)
-    (0..7).to_a.each { |el| self[[6, el]] = Pawn.new(:white, [6, el], self) }
-
-    (2..5).to_a.each do |i|
-      (0..7).to_a.each do |j|
-        self[[i, j]] = NullPiece.instance
-      end
-    end
-  end
-
   def render
     display.render
   end
@@ -87,6 +65,49 @@ class Board
     self[end_pos] = piece
   end
 
+  def check?
+    in_check?(:red) || in_check?(:white)
+  end
+
+  def checkmate?(color)
+    if in_check?(color)
+      if color == :white
+        possible_moves = white_king.get_moves
+        return true if possible_moves.empty?
+        return possible_moves.all? { |el| combined_moves(:red).include?(el) }
+      elsif color == :red
+        possible_moves = black_king.get_moves
+        return true if possible_moves.empty?
+        return possible_moves.all? { |el| combined_moves(:white).include?(el) }
+      end
+    end
+    false
+  end
+
+  private
+
+  def populate
+    self[[0, 3]] = Queen.new(:red, [0, 3], self)
+    self[[0, 4]] = black_king
+    self[[0, 2]], self[[0, 5]] = Bishop.new(:red, [0, 2], self), Bishop.new(:red, [0, 5], self)
+    self[[0, 1]], self[[0, 6]] = Knight.new(:red, [0, 1], self), Knight.new(:red, [0, 6], self)
+    self[[0, 0]], self[[0, 7]] = Rook.new(:red, [0, 0], self), Rook.new(:red, [0, 7], self)
+    (0..7).to_a.each { |el| self[[1, el]] = Pawn.new(:red, [1, el], self) }
+
+    self[[7, 3]] = Queen.new(:white, [7, 3], self)
+    self[[7, 4]] = white_king
+    self[[7, 2]], self[[7, 5]] = Bishop.new(:white, [7, 2], self), Bishop.new(:white, [7, 5], self)
+    self[[7, 1]], self[[7, 6]] = Knight.new(:white, [7, 1], self), Knight.new(:white, [7, 6], self)
+    self[[7, 0]], self[[7, 7]] = Rook.new(:white, [7, 0], self), Rook.new(:white, [7, 7], self)
+    (0..7).to_a.each { |el| self[[6, el]] = Pawn.new(:white, [6, el], self) }
+
+    (2..5).to_a.each do |i|
+      (0..7).to_a.each do |j|
+        self[[i, j]] = NullPiece.instance
+      end
+    end
+  end
+
   def in_check?(color)
     if color == :white
       combined_moves(:red).include?(white_king.pos)
@@ -107,20 +128,5 @@ class Board
       end
     end
     pieces
-  end
-
-  def checkmate?(color)
-    if in_check?(color)
-      if color == :white
-        possible_moves = white_king.get_moves
-        return true if possible_moves.empty?
-        return possible_moves.all? { |el| combined_moves(:red).include?(el) }
-      elsif color == :red
-        possible_moves = black_king.get_moves
-        return true if possible_moves.empty?
-        return possible_moves.all? { |el| combined_moves(:white).include?(el) }
-      end
-    end
-    false
   end
 end

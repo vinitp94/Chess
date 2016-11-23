@@ -1,8 +1,8 @@
 require 'singleton'
 
 class Piece
-  attr_reader :color, :board, :symbol
-  attr_accessor :pos
+  attr_reader :color, :board
+  attr_accessor :pos, :symbol
 
   def initialize(color, pos, board)
     @color = color

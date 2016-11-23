@@ -26,5 +26,6 @@ class Display
       end
       puts arr.join(" ")
     end
+    puts "Check!" if board.check?
   end
 end
