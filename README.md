@@ -1,6 +1,6 @@
 # Chess
 
-This is a Ruby implementation of the classic game, Chess. To play, simply clone the repository on your machine and with ruby installed, run the command "ruby game.rb".
+This is a Ruby terminal implementation of the classic game, Chess. To play, simply clone the repository on your machine and with ruby installed, run the command "ruby game.rb".
 
 ## Implementation
 
